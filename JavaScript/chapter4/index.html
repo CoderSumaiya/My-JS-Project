@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 4: Date Object</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .date-container { 
+            max-width: 500px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            border-top: 5px solid #8e44ad;
+        }
+        h2 { color: #8e44ad; text-align: center; }
+        .info-row { 
+            padding: 10px; 
+            border-bottom: 1px dashed #ddd; 
+            font-size: 16px;
+        }
+        .label { font-weight: bold; color: #2c3e50; }
+        .value { color: #d35400; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="date-container">
+        <h2>Current Date Details</h2>
+        <div id="date-output"></div>
+    </div>
+
+    <script>
+       
+        const currentClock = new Date(); 
+        const currentYear = currentClock.getFullYear();
+        const currentMonthIdx = currentClock.getMonth(); 
+        const dateToday = currentClock.getDate();
+        const weekdayIdx = currentClock.getDay(); 
+
+       
+        const outputDiv = document.getElementById('date-output');
+
+        function addToScreen(label, value) {
+            outputDiv.innerHTML += `
+                <div class="info-row">
+                    <span class="label">${label}:</span> 
+                    <span class="value">${value}</span>
+                </div>`;
+        }
+
+        addToScreen("Full Date/Time", currentClock);
+        addToScreen("Year", currentYear);
+        addToScreen("Month Index", currentMonthIdx + " (January is 0)");
+        addToScreen("Date of Month", dateToday);
+        addToScreen("Day of Week Index", weekdayIdx + " (Sunday is 0)");
+
+    </script>
+</body>
+</html>

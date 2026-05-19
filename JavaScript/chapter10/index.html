@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Handling</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #fff5f5; }
+        .error-container { 
+            max-width: 600px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+        .status-box { 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin-top: 15px; 
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        h2 { color: #c0392b; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <h2>Chapter 10: Custom Exception Handling</h2>
+        <div id="visual-output"></div>
+    </div>
+
+    <script>
+        const outputElement = document.getElementById('visual-output');
+
+        // Function changed: strictDivision -> safeMathDivision
+        function safeMathDivision(val, divBy) {
+            if (divBy === 0) {
+                // Throwing a custom error
+                throw new Error('Zero Division Alert: You cannot divide by zero!');
+            } else {
+                return val / divBy;
+            }
+        }
+
+        function showResult(message, isError = false) {
+            const div = document.createElement('div');
+            div.className = isError ? "status-box error" : "status-box success";
+            div.innerHTML = message;
+            outputElement.appendChild(div);
+        }
+
+        // --- Test 1: Trying a valid division ---
+        try {
+            const calculation = safeMathDivision(100, 5);
+            showResult(`Success! The result is: ${calculation}`);
+        } catch (err) {
+            showResult(`Error: ${err.message}`, true);
+        }
+
+        // --- Test 2: Trying to divide by zero ---
+        try {
+         
+            const calcOutput = safeMathDivision(42, 0); 
+            showResult(`Result: ${calcOutput}`);
+        } catch (errorObj) {
+            // Catching the thrown error
+            showResult(`Caught Exception: ${errorObj.message}`, true);
+        }
+
+        function verifyUserAge(inputAge) {
+            const highLimit = 125;
+            const lowLimit = 18;
+
+            if (inputAge > highLimit || inputAge < lowLimit) {
+                // Throwing RangeError
+                throw new RangeError(
+                    `Age [${inputAge}] is out of bounds (${lowLimit} to ${highLimit}).`
+                );
+            }
+            return `Access Granted! Age ${inputAge} is valid.`;
+        }
+
+        // Test 1: High Range Error
+        try {
+            const messageHigh = verifyUserAge(150); 
+            showResult(messageHigh);
+        } catch (errorRange) {
+            showResult(`<strong>Range Error:</strong> ${errorRange.message}`, true);
+        }
+
+        // Test 2: Within Range Success
+        try {
+            const messageValid = verifyUserAge(25);
+            showResult(messageValid);
+        } catch (errorRange) {
+            showResult(`<strong>Error:</strong> ${errorRange.message}`, true);
+        }
+
+        // --- TypeError Validation 
+
+        // Function changed: calculateValue -> checkNumericType
+        function checkNumericType(inputValue) {
+            if (typeof inputValue !== 'number') {
+                // Throwing TypeError specific-ly
+                throw new TypeError(`Input [${inputValue}] is a ${typeof inputValue}, not a number.`);
+            }
+            return `Verified! The value ${inputValue} is a valid number.`;
+        }
+
+        // Test 1: Wrong Type 
+        try {
+            const typeStatus1 = checkNumericType("Hello"); 
+            showResult(typeStatus1);
+        } catch (typeErr) {
+            // TypeError catch 
+            showResult(`<strong>Type Error:</strong> ${typeErr.message}`, true);
+        }
+
+        // Test 2: Correct Type 
+        try {
+            const typeStatus2 = checkNumericType(42);
+            showResult(typeStatus2);
+        } catch (typeErr) {
+            showResult(`<strong>Error:</strong> ${typeErr.message}`, true);
+        }
+    </script>
+</body>
+</html>

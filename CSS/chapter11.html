@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CSS Concepts Demo</title>
+    <style>
+      
+        :root {
+            --main-bg: #f4f7f6;
+            --header-footer-bg: #2c3e50;
+            --text-white: #ffffff;
+            --accent-color: #e67e22; 
+            --border-style: 1px solid #bdc3c7;
+            --header-height: 60px;
+        }
+
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--main-bg);
+      
+            counter-reset: main-section; 
+        }
+
+
+        header {
+            height: var(--header-height);
+            background-color: var(--header-footer-bg);
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: bold;
+        }
+
+     
+        .main-content {
+      
+            min-height: calc(100vh - (var(--header-height) + 40px)); 
+            padding: 40px;
+        }
+
+ 
+        section {
+            --section-title-color: #2980b9; 
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            counter-reset: sub-section;
+            color: var(--section-title-color);
+            margin-bottom: 15px;
+        }
+
+        h1::before {
+            counter-increment: main-section;
+            content: "Section " counter(main-section) ": ";
+            color: var(--accent-color);
+        }
+
+        h2 {
+            margin: 10px 0 10px 30px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        h2::before {
+            counter-increment: sub-section;
+            content: counter(main-section) "." counter(sub-section) " ";
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+    
+        footer {
+            height: 40px;
+            background-color: var(--header-footer-bg);
+            color: var(--text-white);
+            text-align: center;
+            line-height: 40px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>My Learning Portal (CSS Variables)</header>
+
+    <div class="main-content">
+        
+        <section>
+            <h1>Web Development Basics</h1>
+            <h2>HTML Fundamentals</h2>
+            <h2>CSS Styling Techniques</h2>
+        </section>
+
+        <section>
+            <h1>Dynamic Programming</h1>
+            <h2>JavaScript Essentials</h2>
+            <h2>VBScript Legacy</h2>
+            <h2>Python Integration</h2>
+        </section>
+
+    </div>
+
+    <footer>&copy; 2026  Project - All Rights Reserved</footer>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Async Programming </title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; }
+        .lab-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; display: inline-block; }
+        .output { background: #333; color: #fff; padding: 10px; border-radius: 5px; margin-top: 10px; font-family: monospace; }
+        img { max-width: 200px; margin-top: 10px; border: 2px solid #ddd; }
+    </style>
+</head>
+<body>
+
+    <h1>JavaScript Asynchronous </h1>
+
+    <div class="lab-card">
+        <h2>1. Factorial (Callback Method)</h2>
+        <div id="factorialOutput" class="output">Calculating factorial... (Wait 5s)</div>
+    </div>
+
+    <div class="lab-card">
+        <h2>2. UI Responsiveness (setTimeout)</h2>
+        <div id="asyncStatus" class="output">Click to start processing...</div>
+        <button onclick="startHeavyTask()">Start 10s Task</button>
+    </div>
+
+    <div class="lab-card">
+        <h2>3. Image Fetch (Promise & Async/Await)</h2>
+        <div id="fetchStatus" class="output">Fetching images...</div>
+        <div style="display: flex; gap: 20px;">
+            <div>
+                <p>Promise Method:</p>
+                <img id="imageByPromise" alt="Waiting for Promise...">
+            </div>
+            <div>
+                <p>Async/Await Method:</p>
+                <img id="imageByAsync" alt="Waiting for Async...">
+            </div>
+        </div>
+    </div>
+
+    <div class="lab-card">
+        <h2>4. Multiple Promises (Promise.all)</h2>
+        <div id="promiseAllOutput" class="output">Waiting for all timers to finish...</div>
+    </div>
+
+    <script>
+        // --- 1. Factorial with Callbacks ---
+        function calculateFactorial(val, success, failure) {
+            if (val < 0) {
+                failure("Negative numbers not allowed");
+            } else {
+                setTimeout(() => {
+                    let res = 1;
+                    for (let i = 1; i <= val; i++) res *= i;
+                    success(res);
+                }, 5000);
+            }
+        }
+
+        calculateFactorial(5, 
+            (res) => document.getElementById('factorialOutput').innerText = `Factorial of 5 is: ${res}`,
+            (err) => document.getElementById('factorialOutput').innerText = `Error: ${err}`
+        );
+
+
+        // --- 2. Async Work (Non-blocking ) ---
+        function startHeavyTask() {
+            const display = document.getElementById('asyncStatus');
+            const start = Date.now();
+            let count = 0;
+
+            function runChunk() {
+                if (Date.now() - start < 10000) {
+                    count++;
+                    display.innerText = `Generating: ${count}`;
+                    setTimeout(runChunk, 0); 
+                } else {
+                    display.innerText = "Task Completed without freezing UI!";
+                }
+            }
+            runChunk();
+        }
+
+
+        // --- 3. Image Fetch (Promise .then/catch) ---
+        const imgUrl = 'https://httpbin.org/image/webp';
+        
+        fetch(imgUrl)
+            .then(res => res.blob())
+            .then(blob => {
+                document.getElementById('imageByPromise').src = URL.createObjectURL(blob);
+                console.log("Image 1 loaded via Promise");
+            })
+            .catch(err => console.error(err));
+
+        // --- 3. Image Fetch (Async/Await) ---
+        async function loadAsyncImage() {
+            try {
+                const res = await fetch(imgUrl);
+                const blob = await res.blob();
+                document.getElementById('imageByAsync').src = URL.createObjectURL(blob);
+                document.getElementById('fetchStatus').innerText = "All images loaded successfully!";
+            } catch (err) {
+                document.getElementById('fetchStatus').innerText = "Fetch failed!";
+            }
+        }
+        loadAsyncImage();
+
+
+        // --- 4. Promise.all Example ---
+        function createTimer() {
+            const time = Math.floor(Math.random() * 5000);
+            return new Promise(resolve => {
+                setTimeout(() => resolve(time), time);
+            });
+        }
+
+        Promise.all([createTimer(), createTimer(), createTimer()]).then(results => {
+            document.getElementById('promiseAllOutput').innerText = `All timers finished: ${results.join('ms, ')}ms`;
+        });
+
+    </script>
+</body>
+</html>

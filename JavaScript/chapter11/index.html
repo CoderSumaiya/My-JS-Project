@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #fff9fb; }
+        .dom-container { 
+            max-width: 700px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            border-top: 5px solid #e91e63;
+        }
+        .info-box { 
+            background: #fdf2f5; 
+            border-left: 5px solid #e91e63; 
+            padding: 10px; 
+            margin: 10px 0; 
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        .btn-flower {
+            background-color: #e91e63;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-flower:hover { background-color: #c2185b; }
+        h2 { color: #ad1457; border-bottom: 2px solid #f8bbd0; padding-bottom: 10px; }
+        ul { background: #fff0f5; padding: 20px; border-radius: 5px; list-style-type: square; }
+        li { color: #880e4f; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <div class="dom-container">
+        <h2>Chapter 11: Flower Garden (DOM & Events)</h2>
+        
+        <div id="gardenWrapper">
+            <button id="bloom-btn" class="btn-flower">Click to Bloom!</button>
+            <p>Exploring DOM elements using Flower names.</p>
+            <ul id="flower-list">
+                <li>Rose</li>
+                <li>Lily</li>
+                <li>Tulip</li>
+                <li>Sunflower</li>
+            </ul>
+        </div>
+
+        <div id="result-display"></div>
+    </div>
+
+    <script>
+        const displayArea = document.getElementById('result-display');
+        const garden = document.getElementById('gardenWrapper');
+
+       
+        function logStatus(title, content) {
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${title}:</strong> <div class="info-box">${content}</div>`;
+            displayArea.appendChild(div);
+        }
+
+        // --- 1. Node Checking ---
+        let nodeDetails = '';
+        if(garden.hasChildNodes()) {
+            garden.childNodes.forEach((node) => {
+                if(node.nodeName !== '#text' || node.textContent.trim().length > 0) {
+                    nodeDetails += `Node Type: ${node.nodeName}\n`;
+                }
+            });
+        }
+        logStatus("1. Garden Structure (Nodes)", nodeDetails);
+
+   
+        const flowerItems = document.querySelectorAll('#flower-list li');
+        let flowerNames = '';
+        flowerItems.forEach(flower => {
+            flowerNames += flower.firstChild.data + "  ";
+        });
+        logStatus("2. Flower List Data", flowerNames);
+
+        // --- 3. Click Event ---
+        const bloomButton = document.getElementById('action-btn') || document.getElementById('bloom-btn');
+        
+        const showFlowerAlert = (event) => {
+            event.preventDefault();
+            alert("The flowers are blooming beautifully!");
+        };
+
+        bloomButton.addEventListener("click", showFlowerAlert);
+
+    </script>
+</body>
+</html>

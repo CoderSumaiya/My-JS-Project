@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Layout & Borders Viva Lab</title>
+    <style>
+        /* Common Styling */
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+        .viva-section { background: white; border: 1px dashed #aaa; padding: 20px; margin-bottom: 30px; border-radius: 10px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; }
+        
+        /* 1. Border Styles */
+        .border-demo {
+            border: 5px double #3498db; /* Double border concept */
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* 2. Border Radius */
+        .box-rounded {
+            padding: 20px; width: 120px; height: 60px; background-color: #27ae60; color: white;
+            display: inline-block; margin-right: 10px;
+            border-radius: 15px;
+        }
+        .box-circle {
+            padding: 20px; width: 60px; height: 60px; background-color: #e67e22; color: white;
+            display: inline-block;
+            border-radius: 50%;
+            text-align: center; line-height: 60px;
+        }
+
+        /* 3. Margin & Collapsing */
+        #container-parent { border: 2px solid #333; background: #eee; padding: 5px; }
+        .child-box-one { border: 2px solid red; margin: 30px; background: white; }
+        .child-box-two { border: 2px solid cadetblue; margin: 60px; background: white; }
+
+    
+        .box-logic { 
+            width: 200px; height: 80px; padding: 15px; border: 10px solid #c0392b; 
+            margin: 10px; background: #ecf0f1; display: block;
+        }
+        .content-box-type { box-sizing: content-box; }
+        .border-box-type { box-sizing: border-box; } 
+
+    
+        .outline-demo {
+            border: 3px solid black;
+            outline: 5px dotted rebeccapurple; 
+            margin: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viva-section">
+        <h2>1. Border Styles (double/groove/solid)</h2>
+        <p class="border-demo"></p>
+    </div>
+
+    <div class="viva-section">
+        <h2>2. Border Radius (Shapes)</h2>
+        <div class="box-rounded">Rounded</div>
+        <div class="box-circle">Circle</div>
+    </div>
+
+    <div class="viva-section">
+        <h2>3. Margin & Collapsing</h2>
+        <div id="container-parent">
+            <div class="child-box-one">Box One (30px Margin)</div>
+            <div class="child-box-two">Box Two (60px Margin)</div>
+        </div>
+        <p><small></small></p>
+    </div>
+
+    <div class="viva-section">
+        <h2>4. Box Sizing (The Calculation)</h2>
+        <div id="element-content" class="box-logic content-box-type">
+            Content-Box (Original Size)
+        </div>
+        <p id="res-content"></p>
+
+        <div id="element-border" class="box-logic border-box-type">
+            Border-Box (Compact Size)
+        </div>
+        <p id="res-border"></p>
+    </div>
+
+    <div class="viva-section">
+        <h2>5. Outline vs Border</h2>
+        <p class="outline-demo"> Outline Color</p>
+    </div>
+
+    <script>
+    
+        function updateSize(id, resultId) {
+            var el = document.getElementById(id);
+            var w = el.offsetWidth;
+            var h = el.offsetHeight;
+            document.getElementById(resultId).innerHTML = 
+                "Actual Width in Browser: <b>" + w + "px</b> (Width + Padding + Border)";
+        }
+
+        updateSize("element-content", "res-content");
+        updateSize("element-border", "res-border");
+    </script>
+
+</body>
+</html>

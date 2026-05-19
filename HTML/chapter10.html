@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Advanced API </title>
+    <style>
+        body { font-family: sans-serif; background: #f0f4f8; padding: 20px; }
+        .api-card { background: white; border: 1px solid #ddd; padding: 20px; margin-bottom: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h2 { color: #2980b9; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 0; }
+        
+    
+        #drop-zone { border: 2px dashed #333; width: 300px; height: 100px; display: flex; align-items: center; justify-content: center; margin-top: 10px; background: #fafafa; }
+        #drag-item { padding: 10px; background: #3498db; color: white; cursor: grab; display: inline-block; border-radius: 5px; }
+
+   
+        button { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin: 5px 2px; }
+        button:hover { background: #219150; }
+        input { padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .output-box { margin-top: 15px; padding: 10px; background: #e8f4fd; border-left: 4px solid #3498db; min-height: 20px; }
+        img { border: 2px solid #ddd; border-radius: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">HTML5 Advanced Features</h1>
+
+    <div class="api-card">
+        <h2>1. Drag and Drop API</h2>
+        <div id="drag-item" draggable="true" ondragstart="startDragging(event)">
+            Drag Me!
+        </div>
+        <div id="drop-zone" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
+            Drop Here
+        </div>
+    </div>
+
+    <div class="api-card">
+        <h2>2. Geolocation API</h2>
+        <p>Click the button below to find your current coordinates</p>
+        <button onclick="findMyLocation()">Get Coordinates</button>
+        <div id="location-output" class="output-box">Location will appear here...</div>
+    </div>
+
+    <div class="api-card">
+        <h2>3. Web Storage (Local & Session)</h2>
+        <input type="text" id="user-name" placeholder="Enter your  name"><br>
+        <input type="file" id="user-image"><br>
+        
+        <div class="storage-buttons">
+            <button onclick="saveData('local')">Save to LocalStorage</button>
+            <button onclick="saveData('session')">Save to SessionStorage</button>
+            <button style="background: #2980b9;" onclick="readData()">Read Data</button>
+            <button style="background: #c0392b;" onclick="deleteData()">Delete All</button>
+        </div>
+
+        <div id="storage-display" class="output-box">Storage data will show here...</div>
+    </div>
+
+    <script>
+        // --- 1. Drag & Drop Logic ---
+        function allowDrop(ev) {
+            ev.preventDefault(); 
+        }
+
+        function startDragging(ev) {
+            ev.dataTransfer.setData("elementID", ev.target.id);
+        }
+
+        function handleDrop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("elementID");
+            ev.target.appendChild(document.getElementById(data));
+            ev.target.style.background = "#d4edda";
+            ev.target.innerText = "Dropped Successfully!";
+        }
+
+        // --- 2. Geolocation Logic ---
+        var locDisplay = document.getElementById("location-output");
+        function findMyLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(pos) {
+                    locDisplay.innerHTML = "<b>Latitude:</b> " + pos.coords.latitude + 
+                                         "<br><b>Longitude:</b> " + pos.coords.longitude;
+                });
+            } else {
+                locDisplay.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // --- 3. Web Storage Logic ---
+        function saveData(type) {
+            const name = document.getElementById('user-name').value;
+            const fileInput = document.getElementById('user-image');
+
+            if (name && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const profile = { name: name, photo: reader.result };
+                    if (type === 'local') {
+                        localStorage.setItem('vivaUser', JSON.stringify(profile));
+                        alert('Saved in Local Storage (Permanently)');
+                    } else {
+                        sessionStorage.setItem('vivaUser', JSON.stringify(profile));
+                        alert('Saved in Session Storage (Temporary)');
+                    }
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert('Please provide name and image');
+            }
+        }
+
+        function readData() {
+            const display = document.getElementById('storage-display');
+      
+            const localData = localStorage.getItem('vivaUser');
+            const sessionData = sessionStorage.getItem('vivaUser');
+            
+            const rawData = localData || sessionData;
+
+            if (rawData) {
+                const user = JSON.parse(rawData);
+                const source = localData ? "(From LocalStorage)" : "(From SessionStorage)";
+                display.innerHTML = `<h4>Name: ${user.name} ${source}</h4>
+                                     <img src="${user.photo}" style="max-width:150px">`;
+            } else {
+                display.innerHTML = "No data found in any storage.";
+            }
+        }
+
+        function deleteData() {
+            localStorage.clear();
+            sessionStorage.clear();
+            document.getElementById('storage-display').innerHTML = "All storage cleared!";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Unit & Style Visualization</title>
+    <style>
+       
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; line-height: 1.6; background-color: #f9f9f9; }
+        .code-section { background: white; padding: 20px; margin-bottom: 30px; border: 2px solid #ddd; border-radius: 10px; }
+        h1.title { color: #333; text-align: center; border-bottom: 2px solid #333; }
+
+      
+        .custom { font-size: 1.5em; }
+        .parent { font-size: 15px; background: #e3f2fd; padding: 10px; margin-top: 10px; }
+        .child { font-size: 2em; color: #1565c0; border: 1px dashed #90caf9; padding: 5px; margin-top: 5px; }
+
+  
+        .section2 p { color: red; font-size: 28px; }
+        .section2 h1 { color: blue; font-size: 40px; }
+    </style>
+</head>
+<body>
+
+    <h1 class="title">My CSS</h1>
+
+    <div class="code-section">
+        <h2 style="color: #d84315;">Section 1: Understanding EM Units (Relative)</h2>
+        <article>
+            <p style="font-size: 20px;">
+                <strong>Fixed 20px:</strong> This font is a fixed 20 pixels
+            </p>
+            <p class="custom">
+                <strong>1.5em:</strong> It is 1.5 times the browser's default font size
+            </p>
+        </article>
+
+        <div class="parent">
+            I am Parent (15px)
+            <div class="child">
+                I am Child (15px * 2em = 30px)
+                <div class="child">
+                    I am Grandchild (30px * 2em = 60px) — <em>Oh no! Growing bigger!</em>
+                </div>
+            </div>
+        </div>
+        <p><small>The 'em' unit scales proportionally based on its parent's font size</small></p>
+    </div>
+
+    <div class="code-section section2">
+        <h2 style="color: #2e7d32;">Section 2: CSS Syntax & Priority</h2>
+        <h1>Css Syntax (Blue via Internal CSS)</h1>
+        <div>
+            <h2>Hello Header</h2>
+        </div>
+        
+        <p style="color: brown; font-size: 28px;">
+            <strong>Inline Style:</strong>This paragraph appears brown because inline CSS overrides internal and external styles
+        </p>
+        
+        <p>
+            <strong>Internal Style:</strong> This paragraph is red because it inherited the color from the internal style sheet
+        </p>
+    </div>
+
+</body>
+</html>

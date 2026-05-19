@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 3: Numbers</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f0f4f8; }
+        .result-box { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <div class="result-box">
+        <h3>3.1 String to Number Conversion</h3>
+        <script>
+          
+            const rawText = '42'; 
+            const convertedValue = Number(rawText);
+            
+            document.write("Original String: <code>'" + rawText + "'</code><br>");
+            document.write("Converted Number: <code>" + convertedValue + "</code><br><br>");
+
+            // Comparison Table
+            document.write("<strong>Conversion Comparisons:</strong><br>");
+            document.write("Number('12 goats') -> <code>" + Number('12 goats') + "</code> (NaN)<br>");
+            document.write("parseFloat('12 goats') -> <code>" + parseFloat('12 goats') + "</code><br>");
+            document.write("Number(' ') -> <code>" + Number(' ') + "</code><br>");
+            document.write("parseFloat(' ') -> <code>" + parseFloat(' ') + "</code> (NaN)<br>");
+        </script>
+    </div>
+
+    <div class="result-box">
+        <h3>3.2 Large Integer Precision Issue</h3>
+        <script>
+          
+            const limitInt = Number.MAX_SAFE_INTEGER; 
+
+            document.write("Max Safe Integer: <code>" + limitInt + "</code><br>");
+            document.write("Limit + 1: <code>" + (limitInt + 1) + "</code><br>");
+            document.write("Limit + 2: <code>" + (limitInt + 2) + "</code> (Loss of precision!)<br>");
+            document.write("Limit + 4: <code>" + (limitInt + 4) + "</code> (Incorrect result)<br>");
+        </script>
+    </div>
+
+    <div class="result-box">
+        <h3>3.3 Solving with BigInt</h3>
+        <script>
+        
+            const massiveNum = BigInt(Number.MAX_SAFE_INTEGER);
+
+            document.write("BigInt Value: <code>" + massiveNum + "n</code><br>");
+            document.write("BigInt + 1n: <code>" + (massiveNum + 1n) + "n</code><br>");
+            document.write("BigInt + 2n: <code>" + (massiveNum + 2n) + "n</code><br>");
+            document.write("BigInt + 4n: <code>" + (massiveNum + 4n) + "n</code> (Perfect Accuracy!)<br>");
+        </script>
+    </div>
+
+</body>
+</html>

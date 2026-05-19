@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333; }
+        .box-container { max-width: 800px; margin: auto; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; margin-top: 25px; padding-bottom: 5px; }
+        .output-card { 
+            background: #ffffff; 
+            border: 1px solid #ddd; 
+            border-left: 6px solid #3498db; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .code-font { font-family: 'Courier New', monospace; font-weight: bold; color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <div class="box-container" id="main-view">
+        <h2 style="text-align: center;">Chapter 7: Object Manipulation Visualizer</h2>
+        </div>
+
+    <script>
+        const viewArea = document.getElementById('main-view');
+
+        // Helper function to render results
+        function renderResult(section, description, result) {
+            const sectionHeader = document.createElement('h3');
+            sectionHeader.className = 'section-title';
+            sectionHeader.innerText = section;
+            
+            const card = document.createElement('div');
+            card.className = 'output-card';
+            card.innerHTML = `<strong>Topic:</strong> ${description} <br> 
+                              <strong>Result:</strong> <span class="code-font">${result}</span>`;
+            
+            viewArea.appendChild(sectionHeader);
+            viewArea.appendChild(card);
+        }
+
+        // --- 7.1 Type Checking ---
+        const testDate = new Date(2026, 1, 5);
+        const isDate = testDate instanceof Date ? "Yes, Date Object" : "No";
+        renderResult("7.1 Type Checking", "Checking if 'testDate' is a Date instance", isDate);
+
+        const testStr = new String('Hello');
+        const isStr = testStr instanceof String ? "Yes, String Object" : "No";
+        renderResult("7.1 Type Checking", "Checking if 'testStr' is a String instance", isStr);
+
+        // --- 7.2 Object Literals ---
+        const personObj = {
+            id: 1293481,
+            fName: 'Sumaiya',
+            lName: 'Akter',
+            dob: new Date(2000, 9, 19)
+        };
+        renderResult("7.2 Bundling Data", "Accessing Object Properties", `Name: ${personObj.fName} ${personObj.lName}`);
+
+        // --- 7.3 Property Check ---
+        const hasAddress = 'location' in personObj ? "Found" : "Not Found";
+        renderResult("7.3 Property Check", "Checking if 'location' exists in personObj", hasAddress);
+
+        // --- 7.6 Merging Objects ---
+        const geoInfo = { country: 'Australia', city: 'Adelade' };
+        const combinedProfile = { ...personObj, ...geoInfo };
+        renderResult("7.6 Merging", "Merging Person and Geo objects", `Location: ${combinedProfile.city}, ${combinedProfile.country}`);
+
+        // --- 7.8 Preventing Changes (Freeze) ---
+        const secureUser = { name: "Sawda", role: "Admin" };
+        Object.freeze(secureUser);
+        secureUser.name = "Sumaiya"; 
+        renderResult("7.8 Object Freeze", "Trying to change a Frozen object", `Name remains: ${secureUser.name}`);
+
+        // --- 7.10 Cloning (Shallow) ---
+        const originalInfo = { name: "Sumaiya", scores: [80, 90] };
+        const shallowCopy = { ...originalInfo };
+        shallowCopy.name = "Nusaiba";
+        shallowCopy.scores[0] = 100; 
+        renderResult("7.10 Cloning", "Shallow copy modification", `New Name: ${shallowCopy.name}, Score: ${shallowCopy.scores[0]}`);
+
+        // --- 7.11 Deep Copy ---
+        const primaryData = { name: "Sumaiya", points: [70, 80] };
+        function deepClone(data) {
+            const clone = { ...data };
+            clone.points = [ ...data.points ];
+            return clone;
+        }
+        const safeCopy = deepClone(primaryData);
+        safeCopy.points[0] = 99; 
+        renderResult("7.11 Deep Copy", "Deep copy vs Original", `Original Point[0]: ${primaryData.points[0]}, Deep Copy Point[0]: ${safeCopy.points[0]}`);
+
+        // --- 7.13 Symbols as Enums ---
+        const Signal = { GO: Symbol('green'), STOP: Symbol('red') };
+        function checkSignal(state) {
+            return state === Signal.GO ? "Safe to Go" : "Must Stop";
+        }
+        renderResult("7.13 Enums", "Using Symbols for Logic", checkSignal(Signal.STOP));
+
+    </script>
+</body>
+</html>

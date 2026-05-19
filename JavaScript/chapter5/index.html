@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 5: Array </title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f2f5; }
+        .box-container { max-width: 850px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .output-card { 
+            background: #fff; 
+            border: 1px solid #e1e4e8;
+            border-left: 5px solid #2ecc71; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 4px;
+        }
+        h2 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2ecc71; padding-bottom: 10px; }
+        h3 { color: #27ae60; font-size: 18px; margin-top: 20px; }
+        .array-data { color: #e67e22; font-weight: bold; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="box-container" id="array-visualizer">
+        <h2>Chapter 5: Array & Destructuring</h2>
+        </div>
+
+    <script>
+        const visualArea = document.getElementById('array-visualizer');
+
+        function logToScreen(title, content) {
+            const card = document.createElement('div');
+            card.className = 'output-card';
+            card.innerHTML = `<h3>${title}</h3><div class="array-data">${content}</div>`;
+            visualArea.appendChild(card);
+        }
+
+        // --- 1. Array Destructuring ---
+        const populationStats = [459, 144, 96, 34, 0, 14];
+        const [stat1, stat2, stat3, ...remainingStats] = populationStats;
+        logToScreen("5.1 Destructuring & Rest", `First: ${stat1}, Second: ${stat2}, Others: [${remainingStats}]`);
+
+        // --- 2. Math.max with Spread ---
+        const pointList = [2, 42, 5, 304, 1, 13];
+        const topPoint = Math.max(...pointList);
+        logToScreen("5.2 Max Value (Spread)", `Array: [${pointList}] <br> Maximum: ${topPoint}`);
+
+        // --- 3. Array Cloning (Shallow vs Deep) ---
+        const usersOriginal = [{name: 'Sadie', age: 12}, {name: 'Patrick', age: 18}];
+        const usersDeepCopy = usersOriginal.map(u => ({...u})); 
+        usersDeepCopy[0].name = "Updated Name";
+        logToScreen("5.3 Deep Copy with Map", `Original[0]: ${usersOriginal[0].name} | Copy[0]: ${usersDeepCopy[0].name}`);
+
+        // --- 4. Merging Arrays ---
+        const setA = [2, 4, 6];
+        const setB = [1, 3, 5];
+        const combinedSets = [...setA, ...setB];
+        logToScreen("5.4 Merging with Spread", `Combined: [${combinedSets}]`);
+
+        // --- 5. Filtering Arrays ---
+        const speciesList = ['elephant', 'tiger', 'emu', 'zebra', 'eel'];
+        const eSpecies = speciesList.filter(name => name[0].toLowerCase() === 'e');
+        logToScreen("5.5 Filtering (Starts with 'E')", `Result: ${eSpecies.join(", ")}`);
+
+        // --- 6. Truncating Arrays ---
+        const resizeTest = [10, 20, 30, 40, 50];
+        resizeTest.length = 3; 
+        logToScreen("5.6 Truncating Array", `Length set to 3: [${resizeTest}]`);
+
+        // --- 7. Removing Duplicates (Set) ---
+        const mixedNumbers = [2, 42, 5, 42, 304, 2, 13];
+        const uniqueList = [...new Set(mixedNumbers)];
+        logToScreen("5.7 Unique Values (Using Set)", `Original: [${mixedNumbers}] <br> Unique: [${uniqueList}]`);
+
+
+        // --- 8. Array Validation & Comparison
+
+     
+        const webBrowsers = ['Firefox', 'Edge', 'Chrome', 'IE', 'Safari'];
+        
+        let isArrCheck = Array.isArray(webBrowsers) ? "Yes, it is an Array" : "No";
+        logToScreen("5.8 Array Validation", `Checking webBrowsers: ${isArrCheck}`);
+
+    
+        let browserList = "";
+        webBrowsers.forEach(name => {
+            browserList += name + " | ";
+        });
+        logToScreen("5.9 ForEach Iteration", `Browsers: ${browserList}`);
+
+        // --- 10. Comparing Two Arrays ---
+   
+        const basket1 = ['apple', 'kumquat', 'grapefruit', 'kiwi'];
+        const basket2 = ['apple', 'kumquat', 'grapefruit', 'kiwi'];
+        const basket3 = ['avocado', 'squash', 'red pepper', 'cucumber'];
+
+        function checkEquality(arr1, arr2) {
+            if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false;
+            if (arr1 === arr2) return true;
+            if (arr1.length !== arr2.length) return false;
+            
+            for (let i = 0; i < arr1.length; i++) {
+                if (arr1[i] !== arr2[i]) return false;
+            }
+            return true;
+        }
+
+        const match1 = checkEquality(basket1, basket2); 
+        const match2 = checkEquality(basket1, basket3); 
+
+        logToScreen("5.10 Array Equality Check", 
+            `Comparing Basket1 & Basket2: <b>${match1}</b> <br> 
+             Comparing Basket1 & Basket3: <b>${match2}</b>`);
+
+    </script>
+</body>
+</html>

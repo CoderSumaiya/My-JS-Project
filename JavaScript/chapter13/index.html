@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie and WebSocket</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .lab-box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .screen-output { background: #333; color: #00ff00; padding: 15px; border-radius: 5px; margin-top: 10px; font-family: monospace; min-height: 20px; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 8px 15px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #2980b9; }
+        .delete-btn { background: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <div class="lab-box">
+        <h2>1. Cookie Management</h2>
+        <p>Enter details to save in browser cookie:</p>
+        <input type="text" id="userInputKey" placeholder="Enter Key">
+        <input type="text" id="userInputValue" placeholder="Enter Value">
+        <br><br>
+        <button id="saveBtn">Save to Cookie</button>
+        <button id="showBtn">Get from Cookie</button>
+        <button id="deleteBtn" class="delete-btn">Erase Cookie</button>
+        
+        <p><strong>Browser Document Result:</strong></p>
+        <div id="cookieResultArea" class="screen-output">No data retrieved yet.</div>
+    </div>
+
+    <div class="lab-box">
+        <h2>2. Real-time WebSocket</h2>
+        <p>Connection Status: <span id="socketStatus" style="font-weight:bold; color: orange;">Disconnected</span></p>
+        <p><strong>Live Data from Server:</strong></p>
+        <div id="socketDisplayArea" class="screen-output">Waiting for server data...</div>
+    </div>
+
+    <script>
+ 
+        
+        const outputDiv = document.getElementById("cookieResultArea");
+
+        function handleSave() {
+            const myKey = document.getElementById("userInputKey").value;
+            const myValue = document.getElementById("userInputValue").value;
+            
+            if(myKey && myValue) {
+           
+                document.cookie = `${myKey}=${encodeURIComponent(myValue)}; path=/; max-age=3600`;
+                outputDiv.innerText = `Success: Saved "${myKey}" in Cookie.`;
+            } else {
+                outputDiv.innerText = "Error: Please enter both Key and Value.";
+            }
+        }
+
+        function handleGet() {
+            const targetKey = document.getElementById("userInputKey").value;
+            const cookieString = document.cookie;
+            
+          
+            const findRegex = new RegExp(`(?:^|;)\\s?${targetKey}=(.*?)(?:;|$)`, "i");
+            const resultMatch = cookieString.match(findRegex);
+
+            if (resultMatch) {
+                const finalValue = decodeURIComponent(resultMatch[1]);
+                outputDiv.innerHTML = `Retrieved Value: <strong>${finalValue}</strong>`;
+            } else {
+                outputDiv.innerHTML = `<span style="color: #ff4d4d;">Not Found: No cookie with key "${targetKey}"</span>`;
+            }
+        }
+
+        function handleDelete() {
+            const deleteKey = document.getElementById("userInputKey").value;
+     
+            document.cookie = `${deleteKey}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            outputDiv.innerText = `Status: Cookie "${deleteKey}" has been deleted.`;
+        }
+
+        document.getElementById("saveBtn").onclick = handleSave;
+        document.getElementById("showBtn").onclick = handleGet;
+        document.getElementById("deleteBtn").onclick = handleDelete;
+
+
+ 
+        
+
+        const socketDisplay = document.getElementById("socketDisplayArea");
+        const statusSpan = document.getElementById("socketStatus");
+
+        try {
+            const myWS = new WebSocket("ws://localhost:3000");
+
+            myWS.onopen = () => {
+                statusSpan.innerText = "Connected";
+                statusSpan.style.color = "green";
+            };
+
+            myWS.onmessage = (msgEvent) => {
+          
+                const serverData = JSON.parse(msgEvent.data);
+                
+         
+                serverData.counter = Number(serverData.counter) + 1;
+                serverData.string += `${serverData.counter}-`;
+                
+         
+                socketDisplay.innerHTML = `Server says: ${serverData.string}`;
+                
+           
+                myWS.send(JSON.stringify(serverData));
+            };
+
+            myWS.onerror = () => {
+                statusSpan.innerText = "Error: Server not running";
+                statusSpan.style.color = "red";
+                socketDisplay.innerText = "Could not connect to ws://localhost:3000";
+            };
+        } catch (err) {
+            socketDisplay.innerText = "WebSocket Error!";
+        }
+    </script>
+</body>
+</html>

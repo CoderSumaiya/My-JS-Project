@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All SVG </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .svg-box {
+            margin-bottom: 50px;
+            padding: 20px;
+            border-bottom: 2px dashed #ddd;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>My SVG Design Collection</h1>
+    <hr><br>
+
+    <div class="svg-box">
+        <h2>1. Yellow Circle</h2>
+        <svg width="200" height="150">
+            <circle cx="100" cy="75" r="50" stroke="red" stroke-width="3" fill="yellow"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>2. Yellow Ellipse</h2>
+        <svg width="200" height="150">
+            <ellipse cx="100" cy="75" rx="80" ry="40" fill="yellow" stroke="red" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>3. Drawing Lines (Square, Round, Dashed)</h2>
+        <svg width="200" height="100">
+            <line x1="10" y1="20" x2="180" y2="20" stroke="red" stroke-width="10" stroke-linecap="square"/>
+            <line x1="10" y1="50" x2="180" y2="50" stroke="red" stroke-width="10" stroke-linecap="round"/>
+            <line x1="10" y1="80" x2="180" y2="80" stroke="red" stroke-width="10" stroke-linecap="butt" stroke-dasharray="10,5,20"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>4. Basic and Rounded Rectangle</h2>
+        <svg width="200" height="150">
+            <rect x="10" y="10" width="80" height="80" stroke="red" stroke-width="2" fill="none" />
+            <rect x="110" y="10" width="80" height="80" stroke="red" stroke-width="2" fill="yellow" rx="15" ry="15"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>5. Diamond Polygon</h2>
+        <svg width="150" height="150">
+            <polygon points="75,10 140,75 75,140 10,75" fill="none" stroke="red" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>6. Blue Star (Polygon)</h2>
+        <svg width="200" height="200" viewBox="0 0 100 100">
+            <polygon points="50 0,61 35,98 35, 68 57, 79 91,50 70, 21 91, 32 57, 2 35, 39 35" 
+            fill="blue" stroke="red" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>7. SVG Gaussian Blur Filter</h2>
+        <svg height="150" width="300">
+            <defs>
+                <filter id="my-filter">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
+                </filter>
+            </defs>
+            <rect x="50" y="25" width="200" height="100" fill="green" filter="url(#my-filter)"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>8. SVG Linear Gradient</h2>
+        <svg width="250" height="120">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="yellow"/> 
+                    <stop offset="50%" stop-color="green"/> 
+                    <stop offset="100%" stop-color="red"/> 
+                </linearGradient>
+            </defs>
+            <rect x="25" y="10" width="200" height="100" fill="url(#grad1)"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>9. SVG Radial Gradient</h2>
+        <svg width="200" height="200">
+            <defs>
+                <radialGradient id="grad2" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+                    <stop offset="0%" stop-color="yellow"/> 
+                    <stop offset="50%" stop-color="green"/> 
+                    <stop offset="100%" stop-color="red"/> 
+                </radialGradient>
+            </defs>
+            <rect x="0" y="50" width="200" height="100" fill="url(#grad2)"/>
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>10. Path (Triangle) & Polyline</h2>
+        <svg width="300" height="120">
+            <path d="M50 10 L10 100 L90 100 Z" fill="none" stroke="red" stroke-width="2"/>
+            <polyline points="150,10 200,60 150,110 100,60" fill="none" stroke="blue" stroke-width="2" />
+        </svg>
+    </div>
+
+    <div class="svg-box">
+        <h2>11. SVG Text with Tspan and Link</h2>
+        <svg width="400" height="150" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <a xlink:href="https://www.google.com" target="_blank">
+                <text x="10" y="20" fill="blue" style="cursor:pointer; text-decoration: underline;">Clickable SVG Link</text>
+            </a>
+            <text x="10" y="60" fill="red">Multiline SVG Text:
+                <tspan x="10" y="90" fill="blue">Line Two (Tspan)</tspan>
+                <tspan x="10" y="120" fill="darkblue">Line Three (Tspan)</tspan>
+            </text>
+            <text x="250" y="50" fill="green" transform="rotate(20 250,50)">Rotated Text</text>
+        </svg>
+    </div>
+
+</div>
+
+<footer>
+    <p>Page - 2026</p>
+</footer>
+
+</body>
+</html>

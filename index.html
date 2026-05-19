@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Dynamic Visualizer</title>
+    <style>
+ 
+        :root { --primary: #c19b76; --dark: #0f172a; --accent: #3b82f6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--dark); color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-box { width: 45px; height: 45px; background: var(--primary); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); display: flex; justify-content: center; align-items: center; font-weight: 800; color: #000; }
+        .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #fff; font-size: 12px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        
+        .dropdown { position: relative; }
+        .drop-content { 
+            display: none; position: absolute; background: #1e293b; min-width: 280px; 
+            border-radius: 8px; top: 35px; border: 1px solid rgba(255,255,255,0.1); 
+            max-height: 450px; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .drop-content a { color: #ccc; padding: 12px 18px; display: block; text-transform: none; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .drop-content a:hover { background: var(--primary); color: #000; }
+        .dropdown:hover .drop-content { display: block; }
+
+   
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background-color: #1e293b; margin: 10% auto; padding: 35px; border-radius: 15px;
+            width: 380px; border: 1px solid var(--primary); color: white; text-align: center;
+        }
+        .modal-content input {
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #334155;
+            background: #0f172a; color: white; outline: none;
+        }
+        .modal-btn {
+            background: var(--primary); color: black; border: none; padding: 12px;
+            cursor: pointer; font-weight: bold; border-radius: 5px; width: 100%; margin-top: 15px;
+        }
+
+    
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('img2.avif'); 
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .hero h1 { font-size: 55px; font-weight: 700; margin-bottom: 20px; }
+        .submission-card { background: rgba(255, 255, 255, 0.1); padding: 35px; border-radius: 20px; display: flex; gap: 50px; text-align: left; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(12px); }
+        
+      
+        .display-area { padding: 100px 8%; background: linear-gradient(rgba(10, 15, 29, 0.85), rgba(10, 15, 29, 0.95)), url('img3.jpg'); background-size: cover; background-position: center; background-attachment: fixed; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        #visualizer-card { width: 100%; max-width: 900px; background: white; color: #333; border-radius: 12px; padding: 30px; display: none; box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
+    </style>
+</head>
+<body>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" style="color: #fff; float: right; font-size: 24px; cursor: pointer;" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 10px; color: var(--primary);">Login</h2>
+            <div id="contactDetails" style="display: none; margin-bottom: 20px; font-size: 14px; line-height: 1.6; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                <p><strong>Address:</strong> Dhanmondi, Dhaka, Bangladesh</p>
+                <p><strong>Phone:</strong> +8801700000000</p>
+            </div>
+            <input type="email" placeholder="Email Address" id="emailField">
+            <input type="password" placeholder="Password" id="passField">
+            <button class="modal-btn" onclick="submitAuth()">Submit</button>
+        </div>
+    </div>
+
+    <nav>
+        <div style="display: flex; align-items: center; gap: 12px;"><div class="logo-box">SA</div><span style="font-weight:700; letter-spacing:1px;">VISUALIZER</span></div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="location.reload()">Home</a></li>
+            <li><a href="#" onclick="openModal('Contact')">Contact</a></li>
+            
+            <li class="dropdown">
+                <a>HTML5 ▾</a>
+                <div class="drop-content">
+                    <a onclick="runDynamic('html', 'chapter1')">Chapter1:Getting to Know HTML</a>
+                    <a onclick="runDynamic('html', 'chapter2')">chapter2:HTML Elements</a>
+                    <a onclick="runDynamic('html', 'chapter3')">chapter3:HTML Styles</a>
+                    <a onclick="runDynamic('html', 'chapter4')">chapter4:Semantic HTML</a>
+                    <a onclick="runDynamic('html', 'chapter5')">chapter5:Web Forms</a>
+                    <a onclick="runDynamic('html', 'chapter6')">chapter6:HTML Multimedia</a>
+                    <a onclick="runDynamic('html', 'chapter7')">chapter7:HTML Graphics</a>
+              
+                    <a onclick="runDynamic('html', 'chapter8')">Chapter 8: HTML Advanced</a>
+                    <a onclick="runDynamic('html', 'chapter9')">chapter9:HTML Events</a>
+                    <a onclick="runDynamic('html', 'chapter10')">chapter10:HTML APIs</a>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a>CSS ▾</a>
+                <div class="drop-content">
+                    <a onclick="runDynamic('css', 'chapter1')">chapter1:Getting to Know CSS</a>
+                    <a onclick="runDynamic('css', 'chapter2')">chapter2:CSS Selectors</a>
+                    <a onclick="runDynamic('css', 'chapter3')">chapter3:CSS Cascading</a>
+                 
+                    <a onclick="runDynamic('css', 'chapter4')">chapter4:CSS Box Model</a>
+                    <a onclick="runDynamic('css', 'chapter5')">chapter5:CSS Colors</a>
+                    <a onclick="runDynamic('css', 'chapter6')">chapter6:CSS Text</a>
+                    <a onclick="runDynamic('css', 'chapter7')">chapter7:CSS Backgrounds</a>
+                    <a onclick="runDynamic('css', 'chapter8')">chapter8:CSS Display</a>
+                    <a onclick="runDynamic('css', 'chapter9')">chapter9:CSS Layout</a>
+                    <a onclick="runDynamic('css', 'chapter10')">chapter10:CSS Transitions & Animations</a>
+                    <a onclick="runDynamic('css', 'chapter11')">chapter11:Advanced CSS</a>
+                    <a onclick="runDynamic('css', 'chapter12')">chapter12:Responsive CSS</a>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a>JavaScript ▾</a>
+                <div class="drop-content">
+                    <a onclick="runDynamic('js', 'chapter1')">chapter1:Development Environment</a>
+                    <a onclick="runDynamic('js', 'chapter2')">chapter2:Strings & Regex</a>
+                    <a onclick="runDynamic('js', 'chapter3')">chapter3:Numbers</a>
+                    <a onclick="runDynamic('js', 'chapter4')">chapter4:Dates</a>
+                    <a onclick="runDynamic('js', 'chapter5')">chapter5:Arrays</a>
+                    <a onclick="runDynamic('js', 'chapter6')">chapter6:Functions</a>
+                    <a onclick="runDynamic('js', 'chapter7')">chapter7:Objects</a>
+                    <a onclick="runDynamic('js', 'chapter8')">chapter8:Classes</a>
+                    <a onclick="runDynamic('js', 'chapter9')">chapter9:Asynchronous Programming</a>
+                    <a onclick="runDynamic('js', 'chapter10')">chapter10:Errors & Testing</a>
+                    <a onclick="runDynamic('js', 'chapter11')">chapter11:Browser Tools</a>
+                    <a onclick="runDynamic('js', 'chapter12')">chapter12:Working with HTML</a>
+                    <a onclick="runDynamic('js', 'chapter13')">chapter13:Fetching Remote Data</a>
+                    <a onclick="runDynamic('js', 'chapter14')">chapter14:Data Persistence</a>
+                    <a onclick="runDynamic('js', 'chapter15')">chapter15:Working with Media</a>
+                  
+                </div>
+            </li>
+            
+            <li><a href="#" onclick="openModal('Login')" style="border: 1px solid #fff; padding: 4px 12px; border-radius: 4px;">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to My Js Project</h1>
+        <div class="submission-card">
+            <div class="info-col"><h5>Submitted By</h5><p>Sumaiya Akter</p><span>ID: 1291887 Batch:68/01</span></div>
+            <div style="width:1px; background:rgba(255,255,255,0.2);"></div>
+            <div class="info-col"><h5>Submitted To</h5><p>Syed Zahidul Hassan</p><span>Course: ASP.NET</span></div>
+        </div>
+    </div>
+
+    <div class="display-area">
+        <div id="welcome-hint" style="text-align: center; margin-bottom: 30px;">
+            <h2 style="font-size: 32px;">Live Logic Dashboard</h2>
+            <p style="opacity: 0.7;">Select a specific chapter to run analysis.</p>
+        </div>
+
+        <div id="visualizer-card">
+            <h2 id="chap-header" style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px;"></h2>
+            <div id="chap-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        function openModal(type) {
+            document.getElementById('authModal').style.display = "block";
+            document.getElementById('modalTitle').innerText = type;
+            document.getElementById('contactDetails').style.display = (type === 'Contact') ? "block" : "none";
+        }
+        function closeModal() { document.getElementById('authModal').style.display = "none"; }
+        function submitAuth() { alert("Submitted!"); closeModal(); }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('authModal')) { closeModal(); }
+        }
+
+    
+        function runDynamic(category, filePath) {
+            document.getElementById('welcome-hint').style.display = 'none';
+            const card = document.getElementById('visualizer-card');
+            const content = document.getElementById('chap-content');
+            const header = document.getElementById('chap-header');
+
+            card.style.display = 'block';
+            header.innerText = "Visualizing: " + category.toUpperCase() + " - " + filePath.toUpperCase();
+
+       
+            let finalPath = "";
+            if(category === 'js') {
+         
+                finalPath = `JavaScript/${filePath}/index.html`;
+            } else if(category === 'html') {
+          
+                finalPath = `HTML/${filePath}.html`;
+            } else if(category === 'css') {
+       
+                finalPath = `CSS/${filePath}.html`;
+            } else {
+      
+                finalPath = category + "/" + filePath + ".html";
+            }
+
+            content.innerHTML = `
+                <iframe src="${finalPath}" 
+                        style="width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 8px;">
+                </iframe>`;
+
+            window.scrollTo({ 
+                top: document.querySelector('.display-area').offsetTop - 50, 
+                behavior: 'smooth' 
+            });
+        }
+    </script>
+</body>
+</html>

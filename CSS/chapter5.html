@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Color Modes </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f0f2f5;
+        }
+
+     
+        .box-rgb {
+            color: white;
+            background-color: rgb(75, 101, 186); 
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .box-hex {
+            color: #ffffff;
+            background-color: #27ae60; 
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .box-hsl {
+            color: white;
+            background-color: hsl(340, 82%, 52%); 
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        span {
+            font-weight: bold;
+            background: rgba(0,0,0,0.2);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>CSS Color Representation </h2>
+
+    <p class="box-rgb">
+        This background is set using <span>RGB</span> (Red, Green, Blue).
+    </p>
+
+    <p class="box-hex">
+        This background is set using <span>HEX</span> (#RRGGBB).
+    </p>
+
+    <p class="box-hsl">
+        This background is set using <span>HSL</span> (Hue, Saturation, Lightness).
+    </p>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f0f7f4; }
+        .table-container { 
+            max-width: 500px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #27ae60; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .total-row { font-weight: bold; background-color: #e8f5e9 !important; color: #2e7d32; }
+        h2 { color: #2c3e50; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <h2>Chapter 12: Dynamic Table Sum</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="dataGrid">
+                <tr>
+                    <td>Washington</td>
+                    <td>145</td>
+                </tr>
+                <tr>
+                    <td>Oregon</td>
+                    <td>233</td>
+                </tr>
+                <tr>
+                    <td>Missouri</td>
+                    <td>833</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="checkbox-area">
+    <input type="checkbox" id="termsCheck" /> <label>I accept terms</label>
+    <br>
+    <button id="processBtn" disabled>Continue</button>
+</div>
+<div class="delete-section" style="margin-top: 40px; padding: 20px; border-top: 2px solid #e67e22;">
+    <h3>Inventory List (Click a row to remove)</h3>
+    <table id="inventoryTable" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #e67e22; color: white;">
+                <th>Price</th>
+                <th>Item</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        </table>
+    <div id="deleteLog" style="margin-top: 15px;"></div>
+</div>
+
+<div class="insertion-section" style="margin-top: 40px; padding: 20px; border: 1px solid #ddd; background-color: #fdfdfd;">
+    <h3>Flower Poem (Dynamic Insertion)</h3>
+    <div id="flowerPoemContainer">
+        <p>
+            The Rose speaks of love in a blush of red,<br />
+            A secret shared in the petals it spread.
+        </p>
+        <p>
+            The Lily stands tall with a grace so white,<br />
+            Shining like stars in the middle of night.
+        </p>
+        <p>
+            The Sunflower turns to the golden sun,<br />
+            Knowing the day has only begun.
+        </p>
+    </div>
+</div>
+
+    </div>
+
+    <script>
+    
+        let totalAmount = 0;
+        
+    
+        const valueCells = document.querySelectorAll('td:nth-of-type(2)');
+
+        valueCells.forEach(singleCell => {
+       
+            totalAmount += Number.parseFloat(singleCell.firstChild.data);
+        });
+
+     
+        const footerRow = document.createElement('tr');
+        footerRow.className = "total-row";
+
+  
+        const labelCell = document.createElement('td');
+        const labelText = document.createTextNode('Total Sum:');
+        labelCell.appendChild(labelText);
+        footerRow.appendChild(labelCell);
+
+   
+        const resultCell = document.createElement('td');
+        const resultValueText = document.createTextNode(totalAmount);
+        resultCell.appendChild(resultValueText);
+        footerRow.appendChild(resultCell);
+
+
+        const tableBody = document.getElementById('dataGrid');
+        tableBody.appendChild(footerRow);
+
+     
+    const termsAgreement = document.getElementById('termsCheck');
+    const submitActionBtn = document.getElementById('processBtn');
+
+   
+    const checkStatus = () => {
+        if (termsAgreement.checked) {
+            submitActionBtn.disabled = false;
+            submitActionBtn.style.backgroundColor = "#27ae60";
+            submitActionBtn.style.color = "white";
+        } else {
+            submitActionBtn.disabled = true;
+            submitActionBtn.style.backgroundColor = ""; 
+        }
+    };
+
+ 
+    termsAgreement.addEventListener('change', checkStatus, false);
+
+    const productData = [
+        [123.45, 'Rose Flower', 'Yes'],
+        [65.00, 'Lily Flower', 'No'],
+        [1034.99, 'Tulip Flower', 'Yes']
+    ];
+
+    const targetTable = document.getElementById('inventoryTable');
+    const tableBodyElement = document.createElement('tbody');
+    const statusLog = document.getElementById('deleteLog');
+
+    // --- Deletion Logic ---
+    function executeRemoval() {
+        const rowParent = this.parentNode;
+        const removedRow = rowParent.removeChild(this); 
+
+        let infoText = '';
+        removedRow.childNodes.forEach(node => {
+            infoText += `${node.textContent} `;
+        });
+
+    
+        const p = document.createElement('p');
+        p.style.color = "#d35400";
+        p.style.fontSize = "14px";
+        p.innerHTML = `<strong>Removed:</strong> ${infoText}`;
+        statusLog.appendChild(p);
+    }
+
+    // --- Building the Table ---
+    productData.forEach(rowData => {
+        const trElement = document.createElement('tr');
+        trElement.style.cursor = "pointer";
+        trElement.style.borderBottom = "1px solid #ddd";
+
+        rowData.forEach(cellData => {
+            const tdElement = document.createElement('td');
+            tdElement.style.padding = "10px";
+            tdElement.textContent = cellData;
+            trElement.appendChild(tdElement);
+        });
+
+      
+        trElement.onclick = executeRemoval;
+        tableBodyElement.appendChild(trElement);
+    });
+
+    targetTable.appendChild(tableBodyElement);
+
+
+    const poemWrapper = document.getElementById('flowerPoemContainer');
+    
+
+    const userInput = prompt('Enter a new flower description:', 'The Tulip dances in the spring breeze.');
+
+    if (userInput) {
+  
+        const firstParagraph = poemWrapper.getElementsByTagName('p')[0];
+
+      
+        const newTextNode = document.createTextNode(userInput);
+        const newParaElement = document.createElement('p');
+        
+    
+        newParaElement.style.color = "#8e44ad"; 
+        newParaElement.style.fontWeight = "bold";
+        
+        newParaElement.appendChild(newTextNode);
+
+  
+        poemWrapper.insertBefore(newParaElement, firstParagraph);
+    }
+
+    </script>
+</body>
+</html>

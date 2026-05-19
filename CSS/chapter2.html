@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>   CSS Selectors & Pseudo-elements Demo</title>
+    <style>
+   
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f0f4f8; }
+        .master-section { background: white; padding: 20px; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #e67e22; border-left: 5px solid #e67e22; padding-left: 10px; font-size: 1.2em; }
+        
+  
+        #mainPara { color: red; font-weight: bold; }
+        .aquaText { color: aqua; background: #333; padding: 2px; }
+
+ 
+        .primary { font-style: italic; }
+        .highlight { border: 2px solid orange; padding: 5px; }
+
+   
+        .fancyText::first-line { color: red; font-weight: bold; font-size: 1.2em; }
+        .fancyText::first-letter { color: blue; font-size: 40px; float: left; margin-right: 5px; }
+        .requiredField::after { content: " *"; color: red; font-weight: bold; }
+        
+   
+        p::selection { color: white; background-color: #ff4757; }
+
+        /* ৪. Child Selectors & Pseudo-classes */
+        .childContainer p:first-child { color: green; font-weight: bold; }
+        .childContainer p:last-child { color: purple; text-decoration: underline; }
+        .childContainer p:nth-child(even) { background-color: #f1f1f1; }
+
+        /* ৫. Link Pseudo-classes */
+        .linkSection a:link { color: blue; }
+        .linkSection a:visited { color: gray; }
+        .linkSection a:hover { color: red; text-decoration: none; font-size: 1.1em; }
+        .linkSection a:active { color: yellow; }
+
+        /* ৬. Targeting & Negation (:not) */
+        .nav-link { display: block; margin: 5px 0; text-decoration: none; }
+ 
+        .nav-link:not(:first-child):not(:last-child) { color: red; }
+
+        /* ৭.States & Empty */
+        input:disabled { background: #ddd; cursor: not-allowed; }
+        input:required { border: 2px solid #e74c3c; }
+        div:empty { height: 20px; background: #ff7f50; margin-bottom: 5px; border: 1px dashed black; }
+        
+        /* Target Pseudo-class */
+        #targetSection:target { background: yellow; border: 2px solid black; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>CSS Visualization </h1>
+
+    <div class="master-section">
+        <h2>1. ID, Class & Selection Selectors</h2>
+        <p id="mainPara">This text is red using ID selector (#mainPara).</p>
+        <p class="aquaText">This text is aqua using Class selector (.aquaText).</p>
+        <p>Try to select (drag mouse over) this text to see the yellow/blue selection effect!</p>
+    </div>
+
+    <div class="master-section">
+        <h2>2. Pseudo-elements (::first-letter/line, ::after)</h2>
+        <p class="fancyText">
+            This paragraph has a large first letter and a special first line.<br>
+            The second line will look normal. This demonstrates the power of pseudo-elements.
+        </p>
+        <label class="requiredField">Username</label> <input type="text" placeholder="Required field">
+    </div>
+
+    <div class="master-section">
+        <h2>3. Child Selectors (:first-child, :nth-child)</h2>
+        <div class="childContainer">
+            <p>Child 1: First-child is Green.</p>
+            <p>Child 2: Even-child has background.</p>
+            <p>Child 3: Normal child.</p>
+            <p>Child 4: Last-child is Purple & Underlined.</p>
+        </div>
+    </div>
+
+    <div class="master-section linkSection">
+        <h2>4. Interaction (Links & Hover)</h2>
+        <a href="https://google.com" target="_blank">Google (Hover to see Red)</a><br>
+        <a href="#targetSection">Go to Target Section Below</a>
+    </div>
+
+    <div class="master-section">
+        <h2>5. Form States & Targeting</h2>
+        <input type="text" value="Disabled Input" disabled>
+        <input type="email" placeholder="Required Email" required>
+        <br><br>
+        <div title="This is an empty div"></div> <p id="targetSection">Target Content: This changes color when you click the 'Go to Target' link above!</p>
+    </div>
+
+    <div class="master-section">
+        <h2>6. Negation Selector (:not)</h2>
+        <div>
+            <a class="nav-link" href="#">Link 1 (First - Black)</a>
+            <a class="nav-link" href="#">Link 2 (Middle - Red)</a>
+            <a class="nav-link" href="#">Link 3 (Middle - Red)</a>
+            <a class="nav-link" href="#">Link 4 (Last - Black)</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB User Data Management</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
+        button { background-color: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #2ecc71; }
+        #userData { margin-top: 20px; padding: 10px; background: #e8f5e9; border-radius: 5px; }
+        .user-card { border-bottom: 2px solid #fff; padding: 10px; margin-bottom: 10px; }
+        img { border-radius: 8px; border: 2px solid #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>User Registration (IndexedDB)</h2>
+    <input type="text" id="nameInput" placeholder="Enter User Name" />
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="saveUserData()">Save Data to Database</button>
+    <button onclick="getUserData()" style="background-color: #3498db;">Read & Display Data</button>
+
+    <div id="userData">
+        <p style="text-align:center; color:#7f8c8d;">No data displayed yet.</p>
+    </div>
+</div>
+
+<script>
+    let myDB;
+    const dbName = "UserDatabase";
+    const storeName = "Users";
+
+
+    function openDatabase() {
+        const request = indexedDB.open(dbName, 1);
+
+        request.onupgradeneeded = (event) => {
+            myDB = event.target.result;
+            if (!myDB.objectStoreNames.contains(storeName)) {
+                myDB.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            myDB = event.target.result;
+        };
+
+        request.onerror = () => alert("Database error!");
+    }
+
+
+    function saveUserData() {
+        const nameVal = document.getElementById("nameInput").value;
+        const fileInput = document.getElementById("imageInput").files[0];
+
+        if (!nameVal || !fileInput) {
+            alert("Please provide both name and image!");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(fileInput); 
+
+        reader.onload = () => {
+            const transaction = myDB.transaction(storeName, "readwrite");
+            const store = transaction.objectStore(storeName);
+            
+            const userData = { name: nameVal, image: reader.result };
+            const request = store.add(userData);
+
+            request.onsuccess = () => {
+                alert("Success: User data saved to Document!");
+                document.getElementById("nameInput").value = "";
+                document.getElementById("imageInput").value = "";
+            };
+        };
+    }
+
+
+    function getUserData() {
+        const transaction = myDB.transaction(storeName, "readonly");
+        const objectStore = transaction.objectStore(storeName);
+        const request = objectStore.getAll();
+
+        const displayDiv = document.getElementById("userData");
+        displayDiv.innerHTML = "<strong>Loading data...</strong>";
+
+        request.onsuccess = (event) => {
+            const users = event.target.result;
+            displayDiv.innerHTML = ""; 
+
+            if (users.length === 0) {
+                displayDiv.innerHTML = "No users found in database.";
+                return;
+            }
+
+            users.forEach((user) => {
+                displayDiv.innerHTML += `
+                    <div class="user-card">
+                        <h3>Name: ${user.name}</h3>
+                        <img src="${user.image}" alt="user image" style="max-width:100%; height:auto;">
+                    </div>`;
+            });
+        };
+
+        request.onerror = (event) => {
+            alert("Error occurred: " + event.target.error);
+        };
+    }
+
+   
+    openDatabase();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Event Visualization </title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f0f2f5; }
+        .section { background: white; padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+        .output-log { background: #222; color: #00ff00; padding: 10px; border-radius: 5px; font-family: monospace; margin-top: 10px; height: 50px; overflow-y: auto; }
+        input, select, button { padding: 8px; margin: 5px 0; width: 100%; max-width: 300px; }
+        .mouse-box { padding: 20px; border: 2px dashed #999; text-align: center; cursor: pointer; }
+    </style>
+</head>
+<body onload="showLog('Window: Page Loaded (OnLoad Event)')" onresize="showLog('Window: Resized (OnResize Event)')">
+
+    <h1>HTML Event Visualization </h1>
+
+    <div class="section">
+        <h3>1. Window Events (OnLoad & OnResize)</h3>
+      
+        <div id="window-log" class="output-log"></div>
+    </div>
+
+    <div class="section">
+        <h3>2. Form Events (Focus, Blur, Change, Input)</h3>
+        <input id="inputFocus" type="text" placeholder=" (OnFocus)" onfocus="handleFocus(this)" onblur="handleBlur(this)">
+        <input id="inputChange" type="text" placeholder="(OnChange)" onchange="handleChange(this)">
+        <input id="inputIn" type="text" placeholder="(OnInput)" oninput="handleInput(this)">
+        
+        <select onchange="handleSelect(this)">
+            <option value=""> Choose the car(OnChange)</option>
+            <option value="Audi">Audi</option>
+            <option value="BMW">BMW</option>
+        </select>
+        <div id="form-log" class="output-log"></div>
+    </div>
+
+    <div class="section">
+        <h3>3. Keyboard Events (KeyDown, KeyUp, KeyPress)</h3>
+        <input type="text" placeholder="Press The Key" onkeydown="showLog('Key Down pressed', 'key-log')" onkeyup="handleKeyUp(this)" onkeypress="showLog('Key Pressed', 'key-log')">
+        <div id="key-log" class="output-log"></div>
+    </div>
+
+    <div class="section">
+        <h3>4. Mouse Events (Click, DblClick, Over, Move)</h3>
+        <button onclick="showLog('Button Clicked!', 'mouse-log')">Single Click</button>
+        <button ondblclick="showLog('Button Double Clicked!', 'mouse-log')">Double Click</button>
+        
+        <div class="mouse-box" 
+             onmouseover="this.style.backgroundColor='yellow'; showLog('Mouse Over', 'mouse-log')" 
+             onmouseout="this.style.backgroundColor='white'; showLog('Mouse Out', 'mouse-log')"
+             onmousedown="this.style.color='red'; showLog('Mouse Down', 'mouse-log')"
+             onmouseup="this.style.color='blue'; showLog('Mouse Up', 'mouse-log')"
+             onmousemove="handleMove(this)">
+          Move your mouse over this box to see the effect!
+        </div>
+        <div id="mouse-log" class="output-log"></div>
+    </div>
+
+    <div class="section">
+        <h3>5. Clipboard Events (Copy, Cut, Paste)</h3>
+        <input type="text"  oncopy="showLog('Text Copied!', 'clip-log')" oncut="showLog('Text Cut!', 'clip-log')" onpaste="showLog('Text Pasted!', 'clip-log')">
+        <div id="clip-log" class="output-log"></div>
+    </div>
+
+    <script>
+     
+        function showLog(message, elementId = 'window-log') {
+            const logBox = document.getElementById(elementId);
+            logBox.innerHTML = "Result: " + message;
+            console.log(message);
+        }
+
+        // Form Event Handlers
+        function handleFocus(el) {
+            el.style.background = "#fff3cd";
+            showLog("Input Focused (OnFocus)", 'form-log');
+        }
+
+        function handleBlur(el) {
+            el.style.background = "white";
+            showLog("Input Lost Focus (OnBlur). Value: " + el.value, 'form-log');
+        }
+
+        function handleChange(el) {
+            showLog("Value Changed to: " + el.value, 'form-log');
+        }
+
+        function handleInput(el) {
+            showLog("User Typing: " + el.value, 'form-log');
+        }
+
+        function handleSelect(el) {
+            showLog("Selected Car: " + el.value, 'form-log');
+        }
+
+        // Keyboard Event Handlers
+        function handleKeyUp(el) {
+            el.value = el.value.toUpperCase();
+            showLog("Key Up: Text converted to Uppercase", 'key-log');
+        }
+
+        // Mouse Move Handler
+        function handleMove(p) {
+            let currentSize = window.getComputedStyle(p).fontSize;
+            let size = parseFloat(currentSize);
+            p.style.fontSize = (size + 0.05) + "px";
+            showLog("Mouse Moving... Font size increasing", 'mouse-log');
+        }
+    </script>
+</body>
+</html>

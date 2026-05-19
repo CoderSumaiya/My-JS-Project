@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Block and Inline Elements Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7f6;
+            padding: 30px;
+            line-height: 1.6;
+        }
+
+   
+        header, h6, ul, ol, fieldset {
+            background-color: #d1ecf1; 
+            border-left: 5px solid #0c5460;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+    
+        strong, em {
+            background-color: #fff3cd; 
+            padding: 2px 5px;
+            border: 1px solid #ffeeba;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>HTML Visualization </h2>
+    <p class="note"><strong>Block</strong>  <strong>Inline</strong></p>
+
+    <header>Primary Site Header (Block Element)</header>
+    <header>Secondary Header </header>
+    
+    <h6>Header Level 6 (Smallest Block Header)</h6>
+    
+    <ul>
+        <li>List Item 1 (Unordered)</li>
+        <li>List Item 2 (Unordered)</li>
+    </ul>
+
+    <ol>
+        <li>First Task (Ordered List)</li>
+        <li>Second Task (Ordered List)</li>
+    </ol>
+
+    <fieldset>
+        <legend>Information Box</legend>
+     
+    </fieldset>
+
+    <fieldset>
+        <legend>Description Box</legend>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti, voluptatibus repudiandae natus iusto.
+    </fieldset>
+
+    <hr>
+
+    <h3>Inline Elements Example:</h3>
+    
+    <strong style="display:block; background-color: #f8d7da; border-left: 5px solid #721c24;">
+        This Strong tag is acting like a BLOCK because of CSS.
+    </strong>
+
+    <p>
+       <strong>Strong Text</strong> <em>Emphasized Text</em> 
+    </p>
+</div>
+
+</body>
+</html>

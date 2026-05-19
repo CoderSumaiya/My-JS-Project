@@ -1,0 +1,99 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  <title>Style Cascading</title>
+  <style>
+    h1{
+      color:blue
+    }
+    h1{
+      color:green
+    }
+  </style>
+</head>
+<body>
+  
+<h1 style="">My first heading</h1>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Style Cascading</title>
+    <style>
+      #heading-one {
+        color: antiquewhite;
+      }
+      .heading.first {
+        color: green;
+      }
+      body .heading {
+        color: palevioletred !important;
+      }
+      h1 {
+        color: cornflowerblue;
+      }
+      * {
+        color: burlywood;
+      }
+      .heading {
+        color: blueviolet;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="heading-one" class="heading">My first heading</h1>
+    <p>My first paragraph</p>
+    <h1 id="heading-two" class="heading">My second heading</h1>
+    <p>My second paragraph</p>
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Inheritance</title>
+    <style>
+      .parent {
+        color: brown;
+      }
+      .line {
+        color: cadetblue !important;
+      }
+      .first-line {
+        color: inherit;
+      }
+      .second-line{
+        color: chartreuse;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <article class="parent">
+      <h1>Heading</h1>
+      <p class="line first-line">First line</p>
+      <p class="line second-line">Second line</p>
+    </article>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>InLine Style</title>
+    <style>
+      heading-one {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="heading-one" style="color: brown">My First Heading</h1>
+    <p>My First paragraph</p>
+  </body>
+</html> 
+
+

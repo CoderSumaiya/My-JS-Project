@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 15: Multimedia & SVG</title>
+</head>
+<body style="text-align: center; font-family: sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+    <div style="margin: 20px auto; padding: 20px; border: 3px solid #34495e; background: #ecf0f1; border-radius: 15px; max-width: 550px;">
+        <h2>Video Control</h2>
+        <video id="vPlayer" style="width: 100%; border-radius: 8px;">
+            <source src="movie1.mp4" type="video/mp4"/>
+        </video>
+        <div id="vTimer" style="margin: 10px; font-weight: bold;">⏱️ 0 seconds</div>
+        <button id="pStart" style="background: green; color: white;">Play</button>
+        <button id="pPause" style="background: orange; color: white;" disabled>Pause</button>
+        <button id="pStop" style="background: red; color: white;" disabled>Stop</button>
+    </div>
+
+    <div style="margin: 20px auto; padding: 20px; border: 2px solid #8e44ad; background: #f9f6fb; border-radius: 12px; max-width: 550px;">
+        <h3>Standard SVG</h3>
+        <svg width="100" height="100" style="margin: auto; display: block;">
+            <rect id="rectNormal" width="100" height="100" fill="#ff0000" style="cursor: pointer;"/>
+        </svg>
+    </div>
+
+    <div style="margin: 20px auto; padding: 20px; border: 2px solid #27ae60; background: #f1f9f4; border-radius: 12px; max-width: 550px;">
+        <h3>XML/CDATA SVG</h3>
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="margin: auto; display: block;">
+            <rect id="rectXml" width="100" height="100" fill="#ff0000" style="cursor: pointer;"/>
+            
+            <script type="text/ecmascript">
+                // <![CDATA[
+                // CDATA-r bhetore alada logic jate clash na hoy
+                (function() {
+                    window.addEventListener('load', function() {
+                        const xmlBox = document.getElementById('rectXml');
+                        if (xmlBox) {
+                            xmlBox.onclick = function() {
+                                const fill = this.getAttribute('fill');
+                                this.setAttribute('fill', (fill === '#ff0000') ? '#001aff' : '#ff0000');
+                            };
+                        }
+                    });
+                })();
+                // ]]>
+            </script>
+        </svg>
+    </div>
+
+    <script>
+        // --- Video Logic ---
+        const video = document.getElementById('vPlayer');
+        const bStart = document.getElementById('pStart');
+        const bPause = document.getElementById('pPause');
+        const bStop = document.getElementById('pStop');
+        const vFeedback = document.getElementById('vTimer');
+
+        bStart.onclick = () => { video.play(); bStart.disabled = true; bPause.disabled = false; bStop.disabled = false; };
+        bPause.onclick = () => { video.pause(); bStart.disabled = false; bPause.disabled = true; };
+        bStop.onclick = () => { video.pause(); video.currentTime = 0; bStart.disabled = false; bPause.disabled = true; bStop.disabled = true; };
+        
+        video.ontimeupdate = () => { vFeedback.innerHTML = `⏱️ ${Math.round(video.currentTime)} seconds`; };
+
+        // --- Standard SVG Logic ---
+        const sBox = document.getElementById('rectNormal');
+        sBox.onclick = function() {
+            const c = this.getAttribute('fill');
+            this.setAttribute('fill', (c === '#ff0000') ? '#001aff' : '#ff0000');
+        };
+    </script>
+</body>
+</html>

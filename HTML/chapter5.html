@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Web Form</title>
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            margin: 0;
+        }
+        .form-container {
+            background-color: #ffffff;
+            width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        h2 { color: #1a73e8; text-align: center; }
+        fieldset {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .btn-group { text-align: center; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .btn-submit { background-color: #1a73e8; color: white; }
+        .btn-calc { background-color: #34a853; color: white; }
+        #result-box {
+            margin-top: 15px;
+            padding: 10px;
+            display: none;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Information Form</h2>
+    
+    <form onsubmit="return handleForm(event)">
+        <fieldset>
+            <legend>User Details</legend>
+            
+            <label>Upload Image</label>
+            <input type="file" onchange="loadFile(event)"/>
+            <img id="output" width="80" style="display:block; margin: 10px 0; border-radius: 50%;"/>
+
+            <label>User Name</label>
+            <input type="text"  readonly/>
+
+            <label>Email Address</label>
+            <input type="email" placeholder="example@mail.com" required/>
+
+            <label>Comment</label>
+            <textarea name="Comment" rows="3" placeholder="Write your comments..."></textarea>
+        </fieldset>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-submit">Submit Data</button>
+            <button type="button" class="btn btn-calc" onclick="calculateAddition()">Addition Test</button>
+        </div>
+    </form>
+
+    <div id="result-box"></div>
+</div>
+
+<script>
+    function loadFile(event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function calculateAddition() {
+        var result = 200 + 500;
+        var box = document.getElementById("result-box");
+        box.style.display = "block";
+        box.style.backgroundColor = "#e2e3e5";
+        box.innerHTML = "Addition Result: " + result;
+    }
+
+    function handleForm(event) {
+        event.preventDefault();
+        var box = document.getElementById("result-box");
+        box.style.display = "block";
+        box.style.backgroundColor = "#d1e7dd";
+        box.style.color = "#0f5132";
+        box.innerHTML = "Success! Data has been recorded.";
+        return false;
+    }
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Text Typography </title>
+    <style>
+     
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .viva-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-left: 5px solid #3498db; padding-left: 10px; margin-top: 0; }
+        .label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+
+        /* 1. Text Overflow Concepts */
+        .box-limit { width: 250px; border: 1px solid #333; white-space: nowrap; overflow: hidden; margin-bottom: 10px; padding: 5px; }
+        .overflow-clip { text-overflow: clip; }
+        .overflow-ellipsis { text-overflow: ellipsis; }
+
+        /* 2. Spacing Concepts */
+        .spacing-tight { letter-spacing: -1px; }
+        .spacing-wide { letter-spacing: 2px; }
+
+        /* 3. Text Decoration Style (Short-hand & Long-hand) */
+        .deco-base { 
+            text-decoration-line: underline; 
+            text-decoration-thickness: 4px; 
+            text-decoration-color: red; 
+            margin-bottom: 10px;
+        }
+        #style-double { text-decoration-style: double; }
+        #style-dotted { text-decoration-style: dotted; }
+        #style-dashed { text-decoration-style: dashed; }
+        #style-wavy   { text-decoration-style: wavy; }
+
+      
+        .wrap-container {
+            width: 200px;
+            border: 2px solid #e74c3c;
+            padding: 10px;
+            word-wrap: break-word; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">CSS Text & Typography properties</h1>
+
+    <div class="viva-card">
+        <h2>1. Text Overflow (Clip vs Ellipsis)</h2>
+        <span class="label">Clip </span>
+        <p class="box-limit overflow-clip">This is a long text that will be clipped.</p>
+        
+        <span class="label">Ellipsis </span>
+        <p class="box-limit overflow-ellipsis">This is a long text that shows ellipsis.</p>
+    </div>
+
+    <div class="viva-card">
+        <h2>2. Letter Spacing (Character Gap)</h2>
+        <p>Normal: This is default spacing.</p>
+        <p class="spacing-tight">Tight: This text has negative spacing.</p>
+        <p class="spacing-wide">Wide: This text has extra spacing.</p>
+    </div>
+
+    <div class="viva-card">
+        <h2>3. Text Decoration Styles</h2>
+        <p class="deco-base" id="style-double">Double Underline</p>
+        <p class="deco-base" id="style-dotted">Dotted Underline</p>
+        <p class="deco-base" id="style-dashed">Dashed Underline</p>
+        <p class="deco-base" id="style-wavy">Wavy Underline </p>
+    </div>
+
+    <div class="viva-card">
+        <h2>4. Word Wrap (Long Word Handling)</h2>
+        <div class="wrap-container">
+            VeryLongWordTesting_jasjgkjshgkhnvhslkvhbughsdbytughfbnyj
+        </div>
+        <p><small> <b>break-word</b> </small></p>
+    </div>
+
+</body>
+</html>

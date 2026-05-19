@@ -1,0 +1,155 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 2: Basics</title>
+    <style>
+   
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: #1e3c72; 
+            color: white; 
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+      
+        .box { 
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px; 
+            border-radius: 10px; 
+            max-width: 800px; 
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .item { 
+            background: rgba(255, 255, 255, 0.9); 
+            color: #333;
+            padding: 15px; 
+            border-left: 5px solid #007bff; 
+            margin-bottom: 20px; 
+            border-radius: 5px;
+        }
+
+        h2 { color: white; text-align: center; }
+        .desc { font-style: italic; color: #444; margin-bottom: 10px; display: block; }
+        .output { font-weight: bold; color: #d63384; font-family: monospace; }
+        hr { border: 0; height: 1px; background: rgba(255,255,255,0.3); margin: 20px 0; }
+        
+     
+        .found { background-color: yellow; color: black; font-weight: bold; }
+        
+        textarea, input { width: 95%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        #finalDisplay { background: white; color: black; padding: 10px; border-radius: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Chapter 2: JavaScript Visualization</h2>
+
+    <div class="box">
+        <div class="item">
+            <span class="desc">Here, we have created a BigInt variable and are checking its data type</span>
+            <strong>Result:</strong> <span id="output1" class="output"></span>
+        </div>
+
+        <div class="item">
+            <span class="desc">This demonstrates the difference between Number() and parseFloat() when converting a String to a Number.</span>
+            <strong>Result:</strong> <div id="output2" class="output"></div>
+        </div>
+
+        <div class="item">
+            <span class="desc">For very large numbers regular Numbers lose precision, which is why we use BigInt</span>
+            <strong>Result:</strong> <div id="output3" class="output"></div>
+        </div>
+
+        <div>
+            <h2>Search and Highlight Tool</h2>
+            <textarea id="userInput" rows="4" placeholder="Write a paragraph"></textarea>
+            <input id="searchWord" type="text" placeholder="Word to search">
+            <p><button id="btnFind">Search For Pattern</button></p>
+            <h3>Result:</h3>
+            <div id="finalDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+   
+        const unknownVariable = 12378955798756776777777777777n;
+        if (typeof unknownVariable === 'bigint') {
+            document.getElementById("output1").innerText = "This is  BigInt: " + unknownVariable.toString();
+        }
+
+        const strData = '42';
+        const numData = Number(strData);
+        let res2 = "Original String: '" + strData + "' | Converted: " + numData + "<br>";
+        res2 += "Number('12 goats'): " + Number('12 goats') + " | parseFloat('12 goats'): " + parseFloat('12 goats');
+        document.getElementById("output2").innerHTML = res2;
+
+        const maxInt = Number.MAX_SAFE_INTEGER;
+        const bigInt = BigInt(maxInt);
+        let res3 = "Max Safe Integer + 2: " + (maxInt + 2) + " <br>";
+        res3 += "BigInt(maxInt) + 2n: " + (bigInt + 2n) + " ";
+        document.getElementById("output3").innerHTML = res3;
+
+        const myNumber = 1242.0055;
+        document.write("<h3>1. Number Formatting</h3>");
+        document.write("Original Number: " + myNumber + "<br>");
+        document.write("String (Concatenation): " + (myNumber + '') + "<br>");
+        document.write("Fixed (2 decimal): " + myNumber.toFixed(2) + "<br>");
+        document.write("Precision (5 digits): " + myNumber.toPrecision(5) + "<br>");
+        document.write("Currency Format: " + new Intl.NumberFormat('en-US', {style:'currency', currency:'USD'}).format(myNumber) + "<br>");
+        document.write("<hr>");
+
+        document.write("<h3>2. Strings & Template Literals</h3>");
+        document.write("My Favorite movie is \"The Robinson \"<br>");
+        document.write('This page \u00A9 Shelly Powers.<br>');
+        const userFirstName = "Sumaiya", userLastName = "Akter", workTeam = "Red", joinYear = 2025;
+        document.write(`User Bio: ${userFirstName} ${userLastName} works on the ${workTeam} team since ${joinYear}.<br>`);
+        document.write(`Calculation: The sum of 4 and 8 is ${4+8}<br>`);
+        document.write("<hr>");
+
+        document.write("<h3>3. String Operations</h3>");
+        const mainStory = 'JavaScript is a powerful language for web development.';
+        if (mainStory.includes('infinitely')) {
+            document.write("Search Result: <br>");
+        }
+        document.write(" " + mainStory.replaceAll('infinitely', 'somewhat') + "<br>");
+        document.write("<hr>");
+
+        document.write("<h3>4. Slicing & Arrays</h3>");
+        const fruitsSentence = 'Items: cherries, oranges, apples, bananas. End.';
+        const startIdx = fruitsSentence.indexOf(':'), endIdx = fruitsSentence.indexOf('.', startIdx + 1);
+        const fruitList = fruitsSentence.slice(startIdx + 1, endIdx);
+        document.write("Sliced List: " + fruitList + "<br>");
+        document.write("Final Array: " + fruitList.split(',').map(f => f.trim()).join(" | ") + "<br>");
+        document.write("<hr>");
+
+  
+        document.getElementById("btnFind").onclick = function() {
+            const wordToFind = document.getElementById('searchWord').value;
+            const mainPattern = new RegExp(wordToFind, 'g');
+            const sourceText = document.getElementById('userInput').value;
+            let buildOutput = "<pre>";
+            let cursorIdx = 0;
+            const allMatches = sourceText.matchAll(mainPattern);
+            for (const item of allMatches) {
+                let matchIdx = item.index;
+                buildOutput += sourceText.slice(cursorIdx, matchIdx);
+                buildOutput += "<span class='found'>" + item[0] + "</span>";
+                cursorIdx = matchIdx + item[0].length;
+            }
+            buildOutput += sourceText.slice(cursorIdx);
+            buildOutput += "</pre>";
+            document.getElementById("finalDisplay").innerHTML = buildOutput;
+        }
+    </script>
+</body>
+</html>

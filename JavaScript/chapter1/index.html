@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log and Error Display</title>
+    <style>
+        body { font-family: 'Courier New', monospace; padding: 20px; background-color: #f0f0f0; }
+        .output-box { background: #fff; border: 2px solid #333; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .log-msg { color: #2ecc71; font-weight: bold; }
+        .error-msg { color: #e74c3c; font-weight: bold; border-left: 4px solid red; padding-left: 10px; }
+        h2 { border-bottom: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h1>Browser Document Output</h1>
+
+    <div class="output-box">
+        <h2>System Logs:</h2>
+        <div id="logDisplay"></div>
+    </div>
+
+    <div class="output-box">
+        <h2>Error Reports:</h2>
+        <div id="errorDisplay"></div>
+    </div>
+
+    <script>
+      
+        const logArea = document.getElementById('logDisplay');
+        const systemMessage = "Status: Script is running successfully!";
+        
+        logArea.innerHTML = `<p class="log-msg">✔ ${systemMessage}</p>`;
+        
+       
+        window.onerror = function(message, source, lineno) {
+            const errorArea = document.getElementById('errorDisplay');
+            errorArea.innerHTML = `
+                <p class="error-msg">✖ Error Found!</p>
+                <p><strong>Message:</strong> ${message}</p>
+                <p><strong>Line Number:</strong> ${lineno}</p>
+            `;
+            return true; 
+        };
+    </script>
+
+    <script>
+        
+        showErrorNow();
+    </script>
+
+</body>
+</html>

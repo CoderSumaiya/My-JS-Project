@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter 6: Advanced Functions</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+    <div class="box">
+        <h2>Chapter 6: Function </h2>
+        <button id="btnTrigger">Run Timer Test</button>
+        <div id="functionOutputs"></div>
+    </div>
+
+    <script>
+        const outputDiv = document.getElementById('functionOutputs');
+
+     
+        function logResult(title, value) {
+            document.write(`<div class='result-item'><strong>${title}:</strong> ${value}</div>`);
+        }
+
+        // --- 1. Pass a Function as an Argument ---
+        document.write("<h3>1. Callback Functions</h3>");
+        document.getElementById('btnTrigger').addEventListener("click", handleInteraction, false);
+
+        function handleInteraction() {
+            // setTimeout e callback function 
+            setTimeout(notifyUser, 2000);
+        }
+
+        function notifyUser() {
+            alert('Timer Finished: 2 seconds passed!');
+        }
+        document.write("Status: Click the button to test callback timer.<br><hr>");
+
+
+        // --- 2. Arrow Functions ---
+        document.write("<h3>2. Arrow Functions</h3>");
+        const digitList = [1, 2, 3, 4, 5];
+        const computedSquares = digitList.map((val) => val ** 2);
+        logResult("Squares using Arrow", computedSquares.join(", "));
+
+
+        // --- 3. Default Parameter Value ---
+        document.write("<h3>3. Default Parameters</h3>");
+        function calculateTotal(val1 = 10, val2 = 20, val3 = 30, factor = 1) {
+            return factor * (val1 + val2 + val3);
+        }
+        logResult("Default Values (10+20+30)", calculateTotal());
+        logResult("Custom Values (5+5+5 * 2)", calculateTotal(5, 5, 5, 2));
+        document.write("<hr>");
+
+
+        // --- 4. Unlimited Arguments (Rest Parameters) ---
+        document.write("<h3>4. Rest Parameters</h3>");
+        function sumRoundedValues(...inputNumbers) {
+            let total = 0;
+            for (let i = 0; i < inputNumbers.length; i++) {
+                total += Math.round(inputNumbers[i]);
+            }
+            return total;
+        }
+        logResult("Sum of rounded (2.4, 5.9, 3.1)", sumRoundedValues(2.4, 5.9, 3.1));
+        document.write("<hr>");
+
+
+        // --- 5. Named Function Parameters (Destructuring) ---
+        document.write("<h3>5. Named Parameters (Date Diff)</h3>");
+        function getTimeGap(recent, past, { ignoreTime, precision = 2 } = {}) {
+            if (ignoreTime) {
+                recent.setHours(0, 0, 0, 0);
+                past.setHours(0, 0, 0, 0);
+            }
+            const secGap = (recent.getTime() - past.getTime()) / 1000;
+            return secGap.toFixed(precision);
+        }
+        const todayDate = new Date();
+        const pastDate = new Date(2023, 0, 1); 
+        logResult("Seconds since 2023", getTimeGap(todayDate, pastDate));
+        document.write("<hr>");
+
+
+        // --- 6. Generator Function ---
+        document.write("<h3>6. Generator Functions</h3>");
+        function* dataStream() {
+            yield 101;
+            yield 'Middle Value';
+            yield 'Final Value';
+        }
+        
+        let streamResult = "";
+        for (const chunk of dataStream()) {
+            streamResult += chunk + " | ";
+        }
+        logResult("Generator Yields", streamResult);
+        document.write("<hr>");
+
+
+        // --- 7. Recursive Algorithm (Factorial) ---
+        document.write("<h3>7. Recursion</h3>");
+        function findFactorial(num) {
+            return num <= 1 ? 1 : num * findFactorial(num - 1);
+        }
+        logResult("Factorial of 5", findFactorial(5));
+        logResult("Factorial of 3", findFactorial(3));
+
+    </script>
+</body>
+</html>

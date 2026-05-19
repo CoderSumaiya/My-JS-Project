@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic HTML</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      p {
+        color: rgb(192, 40, 40);
+        background-color: beige;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 25px;
+        margin: 10px auto;
+        padding: 10px;
+        width: 80%;
+        transition: all 0.5s; 
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #1557b0;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Dynamic Content </h1>
+    
+    <button onclick="makeDynamic()">Click to Change Content</button>
+
+    <div id="content-area">
+        <p id="p1">This is a <b>Static</b> Bold line.</p>
+        <p id="p2">This is <i>Italic</i> by default.</p>
+        <p id="p3">Current Status: <mark>Normal</mark></p>
+    </div>
+
+    <script>
+      function makeDynamic() {
+    
+        document.getElementById("p1").innerHTML = "Now it's <b>Dynamic</b> and updated!";
+        document.getElementById("p2").innerHTML = "The <i>Italic</i> text has also changed!";
+        document.getElementById("p3").innerHTML = "Status: <mark>Updated Successfully!</mark>";
+
+
+        let allPs = document.getElementsByTagName("p");
+        for(let i=0; i < allPs.length; i++) {
+            allPs[i].style.backgroundColor = "#d1e7dd";
+            allPs[i].style.color = "#0f5132";
+        }
+        
+        alert("Content has been changed dynamically!");
+      }
+    </script>
+
+  </body>
+</html>
